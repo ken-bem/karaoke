@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .gradle
 /build/
 !gradle/wrapper/gradle-wrapper.jar
@@ -24,3 +25,12 @@
 /dist/
 /nbdist/
 /.nb-gradle/
+=======
+# Created by .ignore support plugin (hsz.mobi)
+node_modules
+.gradle/
+.idea/workspace.xml
+node_modules/
+out/
+
+>>>>>>> ccc36ccbb502d94ae4c8e994d517b656358dc1c6

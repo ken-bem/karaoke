@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboad</title>
+    <link rel="stylesheet" th:href="@{/assets/css/app.css}">
+</head>
+<body >
+
+<div class="columns is-marginless">
+    <section class="section dash-menu  column is-2 has-background-grey-dark">
+
+        <div style="text-align: center; padding-bottom: 10px">
+            <img th:src="@{/images/logo.png}" alt="" width="50"/>
+        </div>
+
+        <div class="">
+            <aside class="menu">
+                <p class="menu-label">
+                    General
+                </p>
+                <ul class="menu-list">
+                    <li><a>Dashboard</a></li>
+                    <li><a>Customers</a></li>
+                </ul>
+                <ul class="menu-list" style="margin-top: auto">
+                    <li><a href="">Logout</a></li>
+                </ul>
+            </aside>
+        </div>
+
+    </section>
+
+    <section class="column is-info container is-10 is-marginless" style="height: 100vh">
+
+        <div style="padding-bottom: 20px">
+            <div class="card ">
+                <div class="card-content">
+                    <p class="title">
+                        Kenneth Reyes Heredia
+                    </p>
+                    <p class=" is-size-5">
+                        Bachillerato en Ciencias de Computadoras
+                    </p>
+                    <p class="is-size-6 is-paddingless">
+                        Sistema de Informacion
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="app" class="columns">
+
+            <div class=" column is-6">
+
+                <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+                    <thead>
+                    <tr>
+                        <th>Curso</th>
+                        <th>Pre-Req/Co-Req</th>
+                        <th>Creditos</th>
+                        <th>Nota</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>COTI 3101</td>
+                        <td>
+                            <div>
+                                <h1 class="title is-5">Algoritmos y Desarrollo de Programas I</h1>
+                                <h2 class="subtitle is-size-7">Pre-req: None</h2>
+                            </div>
+                        </td>
+                        <td>4</td>
+                        <td>
+                            <div class="select">
+                                <select>
+                                    <option value="none" class="disabled" >--</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                    <option value="D">D</option>
+                                    <option value="D">F</option>
+                                </select>
+                            </div>
+
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script th:src="@{/assets/js/app.js}"></script>
+
+</body>
+</html>
