@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class Game {
+public class Game extends Thread{
 
     private Long id;
     private List<Player> playerList = new ArrayList<>();
@@ -18,5 +18,11 @@ public class Game {
     private int score;
     private int highscore;
 
+    public void setPlayerList(List<Player> playerList){
+        this.playerList = playerList;
+    }
 
+    public void setSong(Song song) {
+        this.song = song;
+    }
 }
