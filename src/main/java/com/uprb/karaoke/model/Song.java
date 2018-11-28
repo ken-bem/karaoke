@@ -16,6 +16,10 @@ public class Song {
     private double length;
     private int popularity;
 
+    public Song(){
+
+    }
+
 
 
 }

@@ -14,14 +14,13 @@ public class GameController {
      * 2.Song
      *
      * */
-    public Game setup(List<Player> players, Song song){
+
+    public Game setup(List<Player> players){
 
         if(players == null || players.isEmpty() || players.size() < 3) return null; //GTFO
 
-        if(song == null) return null;
-
         Game game = new Game();
-//        game.setPlayerList(players);
+        game.setPlayerList(players);
 //        game.setSong(song);
 
         return game;
