@@ -35,9 +35,7 @@ public class DataServer {
         private PrintWriter out;
         private BufferedReader in;
 
-        public EchoServer(Socket socket){
-
-        }
+        public EchoServer(Socket socket){ }
 
         public void run(){
             try{
