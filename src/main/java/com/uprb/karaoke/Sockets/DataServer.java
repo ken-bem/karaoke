@@ -3,65 +3,74 @@ package com.uprb.karaoke.Sockets;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class DataServer {
 
-    public static final int PORT = 9001;
+    private int port;
+    private List<PrintStream> clients;
+    private ServerSocket server;
 
-    private ServerSocket serverSocket;
-
-    public void start(int port){
-        try {
-            serverSocket = new ServerSocket(port);
-            while (true)
-                new EchoServer(serverSocket.accept()).start();
-
-        }
-        catch (Exception e){ e.printStackTrace();}
-        finally { stop(); }
+    public static void main(String[] args) throws IOException {
+        new DataServer(12345).run();
     }
 
-    public void stop(){
-        try {
-            serverSocket.close();
-        }catch (Exception e){e.printStackTrace();}
+    public DataServer(int port) {
+        this.port = port;
+        this.clients = new ArrayList<PrintStream>();
     }
 
-
-    private static class EchoServer extends Thread{
-
-        private Socket clientSocket;
-        private PrintWriter out;
-        private BufferedReader in;
-
-        public EchoServer(Socket socket){ }
-
-        public void run(){
-            try{
-                out = new PrintWriter(clientSocket.getOutputStream(),true);
-                in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                String inputLine;
-
-                while((inputLine = in.readLine()) != null){
-                    if(".".equals(inputLine)){
-                        out.println("bye");
-                        break;
-                    }
-
-                    out.println(inputLine);
-                }
-
-
-                in.close();
-                out.close();
-                clientSocket.close();
-
-
-            }catch (IOException e){
-
+    public void run() throws IOException {
+        server = new ServerSocket(port) {
+            protected void finalize() throws IOException {
+                this.close();
             }
+        };
+        System.out.println("Port 12345 is now open.");
+
+        while (true) {
+            // accepts a new client
+            Socket client = server.accept();
+            System.out.println("Connection established with client: " + client.getInetAddress().getHostAddress());
+
+            // add client message to list
+            this.clients.add(new PrintStream(client.getOutputStream()));
+
+            // create a new thread for client handling
+            new Thread(new ClientHandler(this, client.getInputStream())).start();
         }
-   }
+    }
+
+    void broadcastMessages(String msg) {
+        for (PrintStream client : this.clients) {
+            client.println(msg);
+        }
+    }
+}
+
+class ClientHandler implements Runnable {
+
+    private DataServer server;
+    private InputStream client;
+
+    public ClientHandler(DataServer server, InputStream client) {
+        this.server = server;
+        this.client = client;
+    }
+
+    @Override
+    public void run() {
+        String message;
+
+        // when there is a new message, broadcast to all
+        Scanner sc = new Scanner(this.client);
+        while (sc.hasNextLine()) {
+            message = sc.nextLine();
+            server.broadcastMessages(message);
+        }
+        sc.close();
+    }
 
 }

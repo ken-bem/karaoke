@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class Game extends Thread{
+public class Game{
 
     private Long id;
     private List<Player> playerList = new ArrayList<>();

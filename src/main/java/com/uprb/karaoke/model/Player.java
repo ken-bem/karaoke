@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.io.*;
 
 @Data
-public class Player extends Thread{
+public class Player {
 
     private Socket socket;
     private DataInputStream input;
@@ -44,7 +44,7 @@ public class Player extends Thread{
     public void removePlayer() throws IOException{
         socket.close();
         input.close();
-        DataServer.players.remove(this);
+       // DataServer.players.remove(this);
     }
 
 //    public Player(Socket socket,String username, String color, String[] answers){

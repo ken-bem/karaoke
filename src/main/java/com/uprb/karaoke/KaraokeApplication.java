@@ -14,7 +14,7 @@ public class KaraokeApplication {
 
     public static void main(String[] args) throws IOException {
         SpringApplication.run(KaraokeApplication.class, args);
-        new DataServer().start();
+        //new DataServer().start();
 
     }
 
