@@ -1,13 +1,13 @@
 package com.uprb.karaoke;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.gson.JsonObject;
+import com.uprb.karaoke.util.Json;
 
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.HashMap;
 import java.util.Scanner;
-
 
 public class EchoClient {
 
@@ -41,7 +41,9 @@ public class EchoClient {
         System.out.println("Send messages: ");
         PrintStream output = new PrintStream(client.getOutputStream());
         while (sc.hasNextLine()) {
-            output.println(nickname + ": " + sc.nextLine());
+            HashMap<String,String> message = new HashMap<>();
+            message.put("message", sc.nextLine());
+            output.println(Json.toJson(message));
         }
 
         output.close();

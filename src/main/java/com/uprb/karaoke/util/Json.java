@@ -12,7 +12,6 @@ import java.io.IOException;
 
 public class Json {
 
-
     public static final Gson GSON = new GsonBuilder().create();
 
     private static final ObjectMapper mapper;
@@ -24,7 +23,6 @@ public class Json {
         m.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         mapper = m;
     }
-
 
     public static String toJson(Object o) {
         try {

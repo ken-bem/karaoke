@@ -1,17 +1,25 @@
 package com.uprb.karaoke.Sockets;
 
+import com.uprb.karaoke.model.Game;
+import com.uprb.karaoke.model.Player;
+import com.uprb.karaoke.util.Json;
+import com.uprb.karaoke.util.Subscriber;
+
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
 public class DataServer {
 
     private int port;
-    private List<PrintStream> clients;
+    private List<Player> clients;
     private ServerSocket server;
+    private Game game;
 
     public static void main(String[] args) throws IOException {
         new DataServer(12345).run();
@@ -19,7 +27,9 @@ public class DataServer {
 
     public DataServer(int port) {
         this.port = port;
-        this.clients = new ArrayList<PrintStream>();
+        this.clients = new ArrayList<>();
+        this.game = new Game();
+        game.setup();
     }
 
     public void run() throws IOException {
@@ -29,23 +39,47 @@ public class DataServer {
             }
         };
         System.out.println("Port 12345 is now open.");
+        System.out.println("Waiting For Players...");
 
         while (true) {
-            // accepts a new client
-            Socket client = server.accept();
-            System.out.println("Connection established with client: " + client.getInetAddress().getHostAddress());
 
-            // add client message to list
-            this.clients.add(new PrintStream(client.getOutputStream()));
+            //adds new player to the game
+            addPlayerToGame(server.accept());
 
-            // create a new thread for client handling
-            new Thread(new ClientHandler(this, client.getInputStream())).start();
+            //sends the WAITING_FOR_PLAYERS signal
+
+            //Broadcast when a new player is added
+
+            //Send the VOTE signal
+
+            //Send the WAITING FOR VOTING signal after the person has voted
+
+            //Send the Song is selected signal
+
+            //UPDATE LYRICS
+
+            //When the server receives the input,
+            // check if its correct, and set who is the person who correctly answered.
+
+            //Send the correct player and the output
+
         }
+
+    }
+
+    void addPlayerToGame(Socket client) throws IOException {
+
+        Player player = new Player(client);
+        System.out.println("Connection established with client: " + player.getSocket().getInetAddress().getHostAddress());
+
+        this.clients.add(player);
+        new Thread(new ClientHandler(this, player.getSocket().getInputStream())).start();
+
     }
 
     void broadcastMessages(String msg) {
-        for (PrintStream client : this.clients) {
-            client.println(msg);
+        for (Player client : this.clients) {
+            client.getOutput().println(msg);
         }
     }
 }
@@ -68,9 +102,11 @@ class ClientHandler implements Runnable {
         Scanner sc = new Scanner(this.client);
         while (sc.hasNextLine()) {
             message = sc.nextLine();
+            System.out.println(Json.fromJson(message, HashMap.class));
             server.broadcastMessages(message);
         }
         sc.close();
     }
+
 
 }

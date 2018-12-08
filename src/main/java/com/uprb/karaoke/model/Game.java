@@ -4,25 +4,26 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class Game{
 
     private Long id;
-    private List<Player> playerList = new ArrayList<>();
+    private List<Player> playerList;
 
     private Song song;
 
     private int viewers;
-
     private int score;
-    private int highscore;
+    private Map<Player, Integer> highscore;
 
-    public void setPlayerList(List<Player> playerList){
-        this.playerList = playerList;
+    public void setup(){
+        this.playerList = new ArrayList<>();
     }
 
-    public void setSong(Song song) {
-        this.song = song;
+    public void addPlayer(Player player){
+        this.getPlayerList().add(player);
     }
+
 }
