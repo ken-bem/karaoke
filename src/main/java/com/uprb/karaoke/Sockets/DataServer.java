@@ -3,8 +3,7 @@ package com.uprb.karaoke.Sockets;
 import com.uprb.karaoke.model.Game;
 import com.uprb.karaoke.model.Player;
 import com.uprb.karaoke.util.Json;
-import com.uprb.karaoke.util.Subscriber;
-
+import com.uprb.karaoke.util.Messenger;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -41,13 +40,13 @@ public class DataServer {
         System.out.println("Port 12345 is now open.");
         System.out.println("Waiting For Players...");
 
-        while (true) {
+        while (!game.isStarted()) {
 
             //adds new player to the game
             addPlayerToGame(server.accept());
 
             //sends the WAITING_FOR_PLAYERS signal
-
+           broadcastMessages("Waiting for Players", "WAITING_FOR_PLAYERS", null);
             //Broadcast when a new player is added
 
             //Send the VOTE signal
@@ -79,9 +78,27 @@ public class DataServer {
 
     void broadcastMessages(String msg) {
         for (Player client : this.clients) {
+            Messenger message = new Messenger();
+            message.setMessage("Test");
+            message.setStatus("Waiting_For_P");
             client.getOutput().println(msg);
         }
     }
+
+
+    void broadcastMessages(String msg, String status, Object o){
+
+        Messenger messenger = new Messenger();
+        messenger.setMessage(msg);
+        messenger.setStatus(status);
+        messenger.setPayload(Json.toJson(o));
+
+        for (Player client : this.clients){
+            client.getOutput().println(messenger.send());
+        }
+    }
+
+
 }
 
 class ClientHandler implements Runnable {

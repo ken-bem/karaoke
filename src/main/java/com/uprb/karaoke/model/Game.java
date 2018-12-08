@@ -13,6 +13,7 @@ public class Game{
     private List<Player> playerList;
 
     private Song song;
+    private boolean started;
 
     private int viewers;
     private int score;
@@ -20,6 +21,7 @@ public class Game{
 
     public void setup(){
         this.playerList = new ArrayList<>();
+        this.started = false;
     }
 
     public void addPlayer(Player player){
