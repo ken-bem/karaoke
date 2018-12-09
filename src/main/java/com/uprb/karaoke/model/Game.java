@@ -14,6 +14,7 @@ public class Game{
 
     private Song song;
     private boolean started;
+    private GameStatus gameStatus;
 
     private int viewers;
     private int score;
@@ -22,10 +23,14 @@ public class Game{
     public void setup(){
         this.playerList = new ArrayList<>();
         this.started = false;
+        this.gameStatus = GameStatus.WAITING_FOR_PLAYERS;
     }
 
     public void addPlayer(Player player){
         this.getPlayerList().add(player);
     }
 
+    public String getStatus(){
+        return gameStatus.toString();
+    }
 }

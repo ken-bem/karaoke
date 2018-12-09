@@ -1,6 +1,7 @@
 package com.uprb.karaoke.Sockets;
 
 import com.uprb.karaoke.model.Game;
+import com.uprb.karaoke.model.GameStatus;
 import com.uprb.karaoke.model.Player;
 import com.uprb.karaoke.util.Json;
 import com.uprb.karaoke.util.Messenger;
@@ -40,13 +41,13 @@ public class DataServer {
         System.out.println("Port 12345 is now open.");
         System.out.println("Waiting For Players...");
 
-        while (!game.isStarted()) {
+        while (game.getGameStatus().equals(GameStatus.WAITING_FOR_PLAYERS)) {
 
             //adds new player to the game
             addPlayerToGame(server.accept());
 
             //sends the WAITING_FOR_PLAYERS signal
-           broadcastMessages("Waiting for Players", "WAITING_FOR_PLAYERS", null);
+           broadcastMessages("Waiting for Players", game.getStatus(), null);
             //Broadcast when a new player is added
 
             //Send the VOTE signal
