@@ -1,5 +1,7 @@
 package com.uprb.karaoke.model;
 
+
+import com.uprb.karaoke.model.lyrics.Lyric;
 import lombok.Data;
 
 @Data
@@ -11,7 +13,7 @@ public class Song {
     private String album;
     private String cover;
 
-    private Lyrics lyrics;
+    private Lyric lyrics;
 
     private double length;
     private int popularity;

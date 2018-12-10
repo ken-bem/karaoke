@@ -9,10 +9,7 @@ import com.uprb.karaoke.util.Messenger;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class DataServer {
 
@@ -42,28 +39,21 @@ public class DataServer {
         System.out.println("Waiting For Players...");
 
         while (game.getGameStatus().equals(GameStatus.WAITING_FOR_PLAYERS)) {
-
             //adds new player to the game
             addPlayerToGame(server.accept());
-
-            //sends the WAITING_FOR_PLAYERS signal
-           broadcastMessages("Waiting for Players", game.getStatus(), null);
-            //Broadcast when a new player is added
-
-            //Send the VOTE signal
-
-            //Send the WAITING FOR VOTING signal after the person has voted
-
-            //Send the Song is selected signal
-
-            //UPDATE LYRICS
-
-            //When the server receives the input,
-            // check if its correct, and set who is the person who correctly answered.
-
-            //Send the correct player and the output
-
         }
+        //Send the VOTE signal
+
+        //Send the WAITING FOR VOTING signal after the person has voted
+
+        //Send the Song is selected signal
+        game.start();
+        //UPDATE LYRICS
+
+        //When the server receives the input,
+        // check if its correct, and set who is the person who correctly answered.
+
+        //Send the correct player and the output
 
     }
 
@@ -73,7 +63,7 @@ public class DataServer {
         System.out.println("Connection established with client: " + player.getSocket().getInetAddress().getHostAddress());
 
         this.clients.add(player);
-        new Thread(new ClientHandler(this, player.getSocket().getInputStream())).start();
+        new Thread(new ClientHandler(this, player)).start();
 
     }
 
@@ -106,10 +96,12 @@ class ClientHandler implements Runnable {
 
     private DataServer server;
     private InputStream client;
+    private Player player;
 
-    public ClientHandler(DataServer server, InputStream client) {
+    public ClientHandler(DataServer server, Player client) throws IOException {
         this.server = server;
-        this.client = client;
+        this.player = client;
+        this.client = client.getSocket().getInputStream();
     }
 
     @Override
@@ -120,11 +112,17 @@ class ClientHandler implements Runnable {
         Scanner sc = new Scanner(this.client);
         while (sc.hasNextLine()) {
             message = sc.nextLine();
+
             System.out.println(Json.fromJson(message, HashMap.class));
             server.broadcastMessages(message);
         }
         sc.close();
     }
 
+
+    //Process the input of the client.
+    private void processInput(){
+
+    }
 
 }
