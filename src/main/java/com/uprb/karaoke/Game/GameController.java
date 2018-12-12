@@ -2,8 +2,6 @@ package com.uprb.karaoke.Game;
 
 import com.uprb.karaoke.model.Game;
 import com.uprb.karaoke.model.Player;
-import com.uprb.karaoke.model.Song;
-import org.springframework.stereotype.Controller;
 
 import java.util.List;
 

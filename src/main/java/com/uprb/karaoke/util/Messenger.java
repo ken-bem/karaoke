@@ -15,8 +15,20 @@ public class Messenger {
 
     private String payload;
 
+    public Messenger() {
+    }
+
+    public Messenger(String message, String status, String payload) {
+        this.message = message;
+        this.status = status;
+        this.payload = payload;
+    }
+
     public String send(){
         return Json.toJson(this);
     }
 
+    public static Messenger getMessenger(String message, String status, String payload){
+        return new Messenger(message,status,payload);
+    }
 }

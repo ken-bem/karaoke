@@ -112,7 +112,6 @@ public class Lyric{
         return result;
     }
 
-
     public ArrayList<Sentence> getSentences(){
         return sentences;
     }

@@ -1,8 +1,6 @@
 package com.uprb.karaoke.model;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.net.Socket;
 import java.io.*;
 
@@ -24,7 +22,6 @@ public class Player implements Serializable{
         this.socket = socket;
         this.input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.output = new PrintStream(socket.getOutputStream());
-        this.output.println("Someone Connected");
     }
 
     public void setUserName(String userName){

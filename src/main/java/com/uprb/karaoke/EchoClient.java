@@ -1,6 +1,5 @@
 package com.uprb.karaoke;
 
-import com.google.gson.JsonObject;
 import com.uprb.karaoke.util.Json;
 
 import java.io.*;

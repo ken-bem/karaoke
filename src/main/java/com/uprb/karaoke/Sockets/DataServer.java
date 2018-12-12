@@ -42,12 +42,9 @@ public class DataServer {
             //adds new player to the game
             addPlayerToGame(server.accept());
         }
-        //Send the VOTE signal
-
-        //Send the WAITING FOR VOTING signal after the person has voted
 
         //Send the Song is selected signal
-        game.start();
+        game.start(clients);
         //UPDATE LYRICS
 
         //When the server receives the input,
@@ -65,17 +62,33 @@ public class DataServer {
         this.clients.add(player);
         new Thread(new ClientHandler(this, player)).start();
 
+        player
+                .getOutput()
+                .println(Json.toJson(Messenger
+                        .getMessenger("Waiting for Players", "WAITING_FOR_PLAYERS", null)));
+
+        try {
+            Thread.sleep(3000);
+            player
+                    .getOutput()
+                    .println(Json.toJson(Messenger
+                            .getMessenger("Game Started", GameStatus.STARTED.toString(), null)));
+
+            game.setGameStatus(GameStatus.STARTED);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 
     void broadcastMessages(String msg) {
         for (Player client : this.clients) {
             Messenger message = new Messenger();
             message.setMessage("Test");
-            message.setStatus("Waiting_For_P");
+            message.setStatus("Waiting_For_PLAYERS");
             client.getOutput().println(msg);
         }
     }
-
 
     void broadcastMessages(String msg, String status, Object o){
 
@@ -88,7 +101,6 @@ public class DataServer {
             client.getOutput().println(messenger.send());
         }
     }
-
 
 }
 
@@ -112,17 +124,24 @@ class ClientHandler implements Runnable {
         Scanner sc = new Scanner(this.client);
         while (sc.hasNextLine()) {
             message = sc.nextLine();
-
+            processMessage(Json.fromJson(message,Messenger.class));
             System.out.println(Json.fromJson(message, HashMap.class));
             server.broadcastMessages(message);
         }
         sc.close();
     }
 
-
-    //Process the input of the client.
-    private void processInput(){
-
+    public void processMessage(Messenger msg){
+        switch (msg.getStatus()){
+            case "CREATE_PLAYER":
+                setPlayer(msg);
+                server.broadcastMessages("New Player Added");
+        }
     }
 
+    private void setPlayer(Messenger messenger){
+        HashMap info = Json.fromJson(messenger.getPayload(), HashMap.class);
+        player.setUserName(info.get("username").toString());
+        player.setColor(info.get("color").toString());
+    }
 }
