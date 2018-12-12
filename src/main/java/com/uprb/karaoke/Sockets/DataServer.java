@@ -59,6 +59,8 @@ public class DataServer {
         Player player = new Player(client);
         System.out.println("Connection established with client: " + player.getSocket().getInetAddress().getHostAddress());
 
+        broadcastMessages("Player Joined", "PLAYER-JOIN", null);
+
         this.clients.add(player);
         new Thread(new ClientHandler(this, player)).start();
 

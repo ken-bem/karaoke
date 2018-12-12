@@ -48,7 +48,7 @@ public class Game{
 
     public void start(List<Player> players) throws IOException {
         this.playerList = players;
-        File file = new ClassPathResource("/static/abba.lrc")
+        File file = new ClassPathResource("/static/champions.lrc")
                 .getFile();
 
         BufferedReader reader = new BufferedReader(new FileReader(file));
